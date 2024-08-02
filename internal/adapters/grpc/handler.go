@@ -1,0 +1,62 @@
+package grpc
+
+import (
+	"bytes"
+	"context"
+	pb "github.com/antibomberman/mego-protos/gen/go/storage"
+	"github.com/minio/minio-go/v7"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"time"
+)
+
+func (s *serverAPI) PutObject(ctx context.Context, req *pb.PutObjectRequest) (*pb.PutObjectResponse, error) {
+	// Check if the file already exists
+	_, err := s.storage.StatObject(ctx, s.cfg.MinioBucket, req.GetFileName(), minio.StatObjectOptions{})
+	if err == nil {
+		return nil, status.Errorf(codes.AlreadyExists, "File %s already exists", req.GetFileName())
+	}
+
+	_, err = s.storage.PutObject(ctx, s.cfg.MinioBucket, req.GetFileName(), bytes.NewReader(req.GetContent()), int64(len(req.GetContent())), minio.PutObjectOptions{ContentType: req.GetContentType()})
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.PutObjectResponse{FileName: "Successfully uploaded " + req.GetFileName()}, nil
+}
+
+func (s *serverAPI) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*pb.GetObjectResponse, error) {
+	object, err := s.storage.GetObject(ctx, s.cfg.MinioBucket, req.GetFileName(), minio.GetObjectOptions{})
+	if err != nil {
+		return nil, err
+	}
+	defer object.Close()
+
+	info, err := object.Stat()
+	if err != nil {
+		return nil, err
+	}
+
+	content := make([]byte, info.Size)
+	object.Read(content)
+
+	return &pb.GetObjectResponse{FileName: req.GetFileName(), Content: content, ContentType: info.ContentType}, nil
+}
+
+func (s *serverAPI) GetObjectUrl(ctx context.Context, req *pb.GetObjectUrlRequest) (*pb.GetObjectUrlResponse, error) {
+	presignedURL, err := s.storage.PresignedGetObject(ctx, s.cfg.MinioBucket, req.GetFileName(), time.Duration(24)*time.Hour, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.GetObjectUrlResponse{Url: presignedURL.String()}, nil
+}
+
+func (s *serverAPI) DeleteObject(ctx context.Context, req *pb.DeleteObjectRequest) (*pb.DeleteObjectResponse, error) {
+	err := s.storage.RemoveObject(ctx, s.cfg.MinioBucket, req.GetFileName(), minio.RemoveObjectOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.DeleteObjectResponse{Message: "Successfully deleted " + req.GetFileName()}, nil
+}
