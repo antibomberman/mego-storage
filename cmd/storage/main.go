@@ -14,18 +14,17 @@ import (
 )
 
 func main() {
-
 	cfg := config.Load()
 	fmt.Println(cfg)
 	gRPC := grpc.NewServer()
 
 	minioClient, err := initMinio(cfg)
 	if err != nil {
-		log.Fatalf("Failed to initialize MinIO client: %v", err)
+		log.Printf("Failed to initialize MinIO client: %v", err)
 	}
 	l, err := net.Listen("tcp", ":"+cfg.StorageServiceServerPort)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Printf("failed to listen: %v", err)
 	}
 
 	adapter.Register(gRPC, cfg, minioClient)

@@ -6,15 +6,16 @@ services:
     restart: always
     ports:
       - "${MINIO_PORT}:${MINIO_PORT}"
-      - "45543:45543"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: "${MINIO_ROOT_USER}"
       MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD}"
     volumes:
       - ./tmp/minio:/data
-    command: ["server", "/data"]
-    networks:
-      - mego_network
+    command: ["server", "/data","--console-address", ":9001"]
+    network_mode: host
+#    networks:
+#      - mego_network
   mego_storage:
     build:
       context: .

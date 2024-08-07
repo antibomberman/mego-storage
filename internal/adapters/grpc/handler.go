@@ -7,24 +7,22 @@ import (
 	"github.com/minio/minio-go/v7"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"net/http"
 	"time"
 )
 
 func (s *serverAPI) PutObject(ctx context.Context, req *pb.PutObjectRequest) (*pb.PutObjectResponse, error) {
-	contentType := http.DetectContentType(req.Data)
 
 	_, err := s.storage.StatObject(ctx, s.cfg.MinioBucket, req.GetFileName(), minio.StatObjectOptions{})
 	if err == nil {
 		return nil, status.Errorf(codes.AlreadyExists, "File %s already exists", req.GetFileName())
 	}
 
-	_, err = s.storage.PutObject(ctx, s.cfg.MinioBucket, req.GetFileName(), bytes.NewReader(req.GetData()), int64(len(req.GetData())), minio.PutObjectOptions{ContentType: contentType})
+	_, err = s.storage.PutObject(ctx, s.cfg.MinioBucket, req.GetFileName(), bytes.NewReader(req.GetData()), int64(len(req.GetData())), minio.PutObjectOptions{ContentType: req.ContentType})
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.PutObjectResponse{FileName: "Successfully uploaded " + req.GetFileName()}, nil
+	return &pb.PutObjectResponse{FileName: req.GetFileName()}, nil
 }
 
 func (s *serverAPI) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*pb.GetObjectResponse, error) {
