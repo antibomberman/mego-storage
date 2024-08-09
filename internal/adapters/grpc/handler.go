@@ -3,6 +3,7 @@ package grpc
 import (
 	"bytes"
 	"context"
+	"fmt"
 	pb "github.com/antibomberman/mego-protos/gen/go/storage"
 	"github.com/minio/minio-go/v7"
 	"google.golang.org/grpc/codes"
@@ -45,6 +46,8 @@ func (s *serverAPI) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*p
 
 func (s *serverAPI) GetObjectUrl(ctx context.Context, req *pb.GetObjectUrlRequest) (*pb.GetObjectUrlResponse, error) {
 	presignedURL, err := s.storage.PresignedGetObject(ctx, s.cfg.MinioBucket, req.GetFileName(), time.Duration(24)*time.Hour, nil)
+	fmt.Println("Presigned URL: ", presignedURL.String())
+
 	if err != nil {
 		return nil, err
 	}
