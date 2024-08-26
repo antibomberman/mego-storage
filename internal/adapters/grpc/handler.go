@@ -43,13 +43,21 @@ func (s *serverAPI) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*p
 
 func (s *serverAPI) GetObjectUrl(ctx context.Context, req *pb.GetObjectUrlRequest) (*pb.GetObjectUrlResponse, error) {
 	presignedURL, err := s.storage.PresignedGetObject(ctx, s.cfg.MinioBucket, req.GetFileName(), time.Duration(24)*time.Hour, nil)
-	fmt.Println("Presigned URL: ", presignedURL.String())
+
+	if err != nil {
+		return nil, err
+	}
+	info, err := s.storage.StatObject(ctx, s.cfg.MinioBucket, req.GetFileName(), minio.GetObjectOptions{})
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.GetObjectUrlResponse{Url: presignedURL.String()}, nil
+	return &pb.GetObjectUrlResponse{
+		FileName:    req.GetFileName(),
+		ContentType: info.ContentType,
+		Url:         presignedURL.String(),
+	}, nil
 }
 
 func (s *serverAPI) DeleteObject(ctx context.Context, req *pb.DeleteObjectRequest) (*pb.DeleteObjectResponse, error) {

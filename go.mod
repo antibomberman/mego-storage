@@ -3,7 +3,7 @@ module antibomberman/mego-storage
 go 1.22.5
 
 require (
-	github.com/antibomberman/mego-protos v0.0.72
+	github.com/antibomberman/mego-protos v0.0.82
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/minio/minio-go/v7 v7.0.74
 	google.golang.org/grpc v1.65.0
