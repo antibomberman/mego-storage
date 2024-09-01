@@ -1,17 +1,5 @@
 github.com/BurntSushi/toml v1.2.1 h1:9F2/+DoOYIOksmaJFPw1tGFy1eDnIJXg+UHjuD8lTak=
 github.com/BurntSushi/toml v1.2.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
-github.com/antibomberman/mego-protos v0.0.24 h1:niVtUvC2qShx5staFDTeVYsgNLetFzBrhfsZs5AiQrk=
-github.com/antibomberman/mego-protos v0.0.24/go.mod h1:VPMBG3z+MOzBSAyIqD1tWXYVDSv20kHozawJ7Tc8F7Y=
-github.com/antibomberman/mego-protos v0.0.46 h1:+gL9APbVJLYgu5V4n38BpT3TT7PzF5UV54UiPxLLgaI=
-github.com/antibomberman/mego-protos v0.0.46/go.mod h1:VPMBG3z+MOzBSAyIqD1tWXYVDSv20kHozawJ7Tc8F7Y=
-github.com/antibomberman/mego-protos v0.0.47 h1:jBQ4AdzfPV4DPYFKeLT54yddVrHgFIPnRf0E0lfsumc=
-github.com/antibomberman/mego-protos v0.0.47/go.mod h1:VPMBG3z+MOzBSAyIqD1tWXYVDSv20kHozawJ7Tc8F7Y=
-github.com/antibomberman/mego-protos v0.0.50 h1:RXBsIHbe+XFZnmV3LuOTTYVzh2gA5MzM/KD6GkxlY7I=
-github.com/antibomberman/mego-protos v0.0.50/go.mod h1:VPMBG3z+MOzBSAyIqD1tWXYVDSv20kHozawJ7Tc8F7Y=
-github.com/antibomberman/mego-protos v0.0.56 h1:R+Vlhdd4qpaQf7q61VGRGHbFIZ7ADUn8x+La0FhPXuQ=
-github.com/antibomberman/mego-protos v0.0.56/go.mod h1:VPMBG3z+MOzBSAyIqD1tWXYVDSv20kHozawJ7Tc8F7Y=
-github.com/antibomberman/mego-protos v0.0.72 h1:4XV9Opg3kCdNciQx+ZejDwq8GfBMpjsFb6X7c8ZiqzU=
-github.com/antibomberman/mego-protos v0.0.72/go.mod h1:VPMBG3z+MOzBSAyIqD1tWXYVDSv20kHozawJ7Tc8F7Y=
 github.com/antibomberman/mego-protos v0.0.82 h1:vWtiIQ+lYtkl3elZ05dyEF1iA73zzDYPtp2EiWZ/fd8=
 github.com/antibomberman/mego-protos v0.0.82/go.mod h1:VPMBG3z+MOzBSAyIqD1tWXYVDSv20kHozawJ7Tc8F7Y=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

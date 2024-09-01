@@ -1,11 +1,14 @@
-FROM golang:1.22.5
+FROM golang:1.22.5-alpine AS builder
 WORKDIR /app
-COPY go.mod go.sum ./
+COPY go.mod .
+COPY go.sum .
+
 RUN go mod tidy
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o storage cmd/storage/main.go
-RUN chmod +x ./storage
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o app cmd/storage/main.go
 
-CMD ["./storage"]
+FROM scratch
+COPY --from=builder /app/ .
+CMD ["/app"]

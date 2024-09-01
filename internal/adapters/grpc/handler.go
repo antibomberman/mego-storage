@@ -6,6 +6,7 @@ import (
 	"fmt"
 	pb "github.com/antibomberman/mego-protos/gen/go/storage"
 	"github.com/minio/minio-go/v7"
+	"log"
 	"math/rand"
 	"path/filepath"
 	"strings"
@@ -13,6 +14,7 @@ import (
 )
 
 func (s *serverAPI) PutObject(ctx context.Context, req *pb.PutObjectRequest) (*pb.PutObjectResponse, error) {
+	log.Printf("Received PutObjectRequest: %v", req)
 	fileName := generateRandomFileName(s.storage, ctx, s.cfg.MinioBucket, req.GetFileName())
 
 	_, err := s.storage.PutObject(ctx, s.cfg.MinioBucket, fileName, bytes.NewReader(req.GetData()), int64(len(req.GetData())), minio.PutObjectOptions{ContentType: req.ContentType})
